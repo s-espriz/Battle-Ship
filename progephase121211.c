@@ -1,12 +1,32 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define length_1 10 
-#define width_1 10
-#define tedad_kashti 10
-#define MAX 15
+int length_1 ; 
+int width_1 ;
+int tedad_kashti;	
+#define MAX 100
+void clrscr()
+{
+	system("@cls||clear");
+}
+void init_map(){
+	int width;
+	int length;
+    int ship_count;
+
+	printf("Enter Width :");
+	scanf("%d", &width);
+	printf("\nEnter length:");
+	scanf("%d" , &length);
+	printf("\nHow Many Ships:");
+	scanf("%d" , &ship_count);
+	clrscr();
+	tedad_kashti = ship_count;
+	length_1 = length;
+	width_1 = width;
+}
 struct information{
-     char tol[10], arz[10];
-	char kind[10], jahat[10];
+     char tol[100], arz[100];
+	char kind[100], jahat[100];
    };
    struct information player[2];
     void locate_info(void);
@@ -16,34 +36,59 @@ struct information{
     int check(int array[][width_1]);
 
 int main(){
+	init_map();
+	// printf("Hello\n");
 	int tester = 0;
-	 int array1[length_1][width_1];
+	int array1[length_1][width_1];
   	int array2[length_1][width_1];
 	locate_info();
 	gameplay(array1, array2);
 	
 	while(((check(array1)) && (check(array2)))){
 		char str_1[10];
-		printf("Enter a point\n");
-	scanf("%s" , str_1);
 	if((tester % 2) == 0){
+		printf("Player1 : \nEnter a point\n");
+	scanf("%s" , str_1);
+		printf("\nEnemy`s Map :\n");
 		anjame_bazi( str_1, array2);
 		show(array2);
+		printf("################################################################################################################\n");
+
 	}
 	else{
+		printf("\nPlayer2 : \nEnter a point\n");
+		scanf("%s" , str_1);
+
+		printf("\nEnemy`s Map :\n");
 		anjame_bazi( str_1, array1);
 		show(array1);
+		printf("################################################################################################################\n");
 	}
 	++tester;  
 	}	
+	if((check(array1)) == 0)
+	{
+		clrscr();
+		printf("player 2 win!\n");
+	}
+	if((check(array2)) == 0)
+	{	
+		clrscr();
+		printf("player 1 win!\n");
+	}
 }
 void locate_info(void){
 	int i, j;
    for(j = 0; j < 2; ++j){
-   	printf("Enter your ships location:\n");
+   	printf("Enter your ships location:");
    	for(i = 0; i < tedad_kashti; ++i){
    		char str[50];
 		fgets(str , MAX ,stdin);
+		if(str[0] == '\n'){
+			str[0] = '\0';
+			i--;
+			continue;
+		}
 	if((str[5] < 48) || (str[5] > (length_1 + 48)) || (str[7] < 48) || (str[7] > (width_1 + 48))){
 		printf("This location is not defined!\n");
 		--i;
@@ -54,6 +99,7 @@ void locate_info(void){
 	player[j].arz[i] = str[7];
 	player[j].jahat[i] = str[15];
 	printf("\n");
+	clrscr();
 }
   printf("\n");
   }
@@ -115,7 +161,7 @@ void locate_info(void){
 				}
 			}
 		}
-   	  if(counter == 10){
+   	  if(counter == tedad_kashti){
    	  	return 0;
 		 }
 	 return 1;
